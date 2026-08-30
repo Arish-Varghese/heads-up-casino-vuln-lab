@@ -1,0 +1,18 @@
+<h1>Welcome, <%= user.username %></h1>
+<% if (result) { %>
+  <p><strong>You <%= result === 'win' ? 'won' : 'lost' %> <%= amount %>!</strong></p>
+<% } %>
+<p>Balance: <%= user.balance %></p>
+
+<form action="/bet" method="POST">
+  <label>Choice:</label>
+  <select name="choice">
+    <option value="heads">Heads</option>
+    <option value="tails">Tails</option>
+  </select>
+  <input type="number" name="amount" placeholder="Bet amount" required>
+  <button type="submit">Place Bet</button>
+</form>
+
+<a href="/history">View Bet History</a>
+<a href="/logout">Logout</a>

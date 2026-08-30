@@ -1,0 +1,24 @@
+<h1>Admin Panel</h1>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Balance</th>
+    <th>Update</th>
+  </tr>
+  <% users.forEach(u => { %>
+    <tr>
+      <td><%= u.id %></td>
+      <td><%= u.username %></td>
+      <td><%= u.balance %></td>
+      <td>
+        <form action="/admin/update-balance" method="POST" style="display:inline">
+          <input type="hidden" name="userId" value="<%= u.id %>">
+          <input type="number" name="newBalance" placeholder="New balance">
+          <button type="submit">Update</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+<a href="/dashboard">Back to Dashboard</a>

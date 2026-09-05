@@ -1,0 +1,10 @@
+<nav class="nav">
+  <span class="brand">Heads Up</span>
+  <div class="links">
+    <span class="balance">Balance: <%= user.balance %></span>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/history">History</a>
+    <% if (user.is_admin) { %><a href="/admin">Admin</a><% } %>
+    <a href="/logout">Logout</a>
+  </div>
+</nav>

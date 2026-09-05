@@ -86,23 +86,19 @@ app.post('/bet', (req, res) => {
 
 // Bet history
 app.get('/history', (req, res) => {
-  if (!req.session.userId) {
-    return res.redirect('/login');
-  }
+  if (!req.session.userId) return res.redirect('/login');
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
   const bets = db.prepare('SELECT * FROM bets WHERE user_id = ?').all(req.session.userId);
-  res.render('history', { bets });
+  res.render('history', { bets, user });
 });
 
 // Admin panel
 app.get('/admin', (req, res) => {
-  if (!req.session.userId) {
-    return res.redirect('/login');
-  }
-  if (!req.session.isAdmin) {
-    return res.send('Access denied. Admins only.');
-  }
+  if (!req.session.userId) return res.redirect('/login');
+  if (!req.session.isAdmin) return res.send('Access denied. Admins only.');
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
   const users = db.prepare('SELECT * FROM users').all();
-  res.render('admin', { users });
+  res.render('admin', { users, user });
 });
 
 // Admin: update a user's balance

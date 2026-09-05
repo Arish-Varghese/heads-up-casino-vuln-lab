@@ -1,18 +1,20 @@
-<h1>Bet History</h1>
-<table border="1">
-  <tr>
-    <th>Amount</th>
-    <th>Choice</th>
-    <th>Result</th>
-    <th>Time</th>
-  </tr>
-  <% bets.forEach(bet => { %>
-    <tr>
-      <td><%= bet.amount %></td>
-      <td><%= bet.choice %></td>
-      <td><%= bet.result %></td>
-      <td><%= bet.timestamp %></td>
-    </tr>
-  <% }) %>
-</table>
-<a href="/dashboard">Back to Dashboard</a>
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Bet History' }) %></head>
+<body>
+<%- include('partials/nav', { user }) %>
+  <div class="page page-wide">
+    <div class="card">
+      <h1>Bet History</h1>
+      <div class="table-wrap">
+      <table>
+        <tr><th>Amount</th><th>Choice</th><th>Result</th><th>Time</th></tr>
+        <% bets.forEach(bet => { %>
+          <tr><td><%= bet.amount %></td><td><%= bet.choice %></td><td><%= bet.result %></td><td><%= bet.timestamp %></td></tr>
+        <% }) %>
+      </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

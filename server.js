@@ -14,6 +14,11 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
+
 // Signup page
 app.get('/signup', (req, res) => {
   res.render('signup');
@@ -114,7 +119,14 @@ app.post('/admin/update-balance', (req, res) => {
 // View a user's profile - VULNERABLE: trusts the URL id with no ownership check
 app.get('/profile/:id', (req, res) => {
   if (!req.session.userId) return res.redirect('/login');
-  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.params.id);
+
+  const requestedId = parseInt(req.params.id);
+
+  if (requestedId !== req.session.userId && !req.session.isAdmin) {
+    return res.status(403).send('Access denied. You can only view your own profile.');
+  }
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(requestedId);
   res.render('profile', { user });
 });
 

@@ -37,7 +37,17 @@ No ownership check — the route trusts req.params.id directly instead of
 verifying it matches req.session.userId.
 
 ## Fix
-(to be added once fixed)
+Added an ownership check: the route now compares the requested profile id
+against the logged-in user's own session id. If they don't match, the
+request is rejected with a 403 Forbidden — unless the requester is an
+admin, in which case access is intentionally allowed (mirrors a real
+support/admin use case rather than blocking all cross-user access).
 
 ## Verification
-(to be added once fixed)
+- Logged in as Arish, requested /profile/5 (Bruce) — returns 403 Forbidden,
+  "Access denied. You can only view your own profile." (previously returned
+  Bruce's full profile data)
+- Logged in as Arish, requested /profile/2 (own profile) — returns 200 with
+  correct own data, confirming the fix does not block legitimate access.
+- Logged in as admin, requested /profile/5 and /profile/1 — both succeed
+  with 200, confirming the admin exception works as intended.

@@ -9,6 +9,7 @@
     <% } %>
     <div class="card">
       <h1>Welcome, <%= user.username %></h1>
+      <p><a href="/profile/<%= user.id %>">View My Profile</a></p>
       <form action="/bet" method="POST">
         <label for="choice">Choice</label>
         <select name="choice" id="choice">

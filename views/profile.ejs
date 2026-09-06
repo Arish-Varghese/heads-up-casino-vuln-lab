@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: 'Profile' }) %></head>
+<body>
+  <div class="page">
+    <div class="card">
+      <h1><%= user.username %>'s Profile</h1>
+      <p>User ID: <%= user.id %></p>
+      <p>Balance: <%= user.balance %></p>
+      <a href="/dashboard">Back to Dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

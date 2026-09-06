@@ -42,10 +42,14 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   const user = db.prepare('SELECT * FROM users WHERE username = ? AND password = ?').get(username, password);
   if (user) {
+  req.session.regenerate((err) => {
+    if (err) return res.send('Something went wrong. Please try again.');
     req.session.userId = user.id;
     req.session.isAdmin = user.is_admin;
     res.redirect('/dashboard');
-  } else {
+    });
+  } 
+  else {
     res.send('Invalid username or password. <a href="/login">Try again</a>');
   }
 });

@@ -1,8 +1,13 @@
-# Heads Up — Deliberately Vulnerable Casino Web App
+# Heads Up — A Deliberately Vulnerable Coin-Toss Betting App
 
-A small full-stack betting/casino application built from scratch to
-demonstrate practical AppSec skills: designing, exploiting, documenting,
-and fixing real web vulnerabilities in an app I built myself.
+A small full-stack web app built around a simple heads-or-tails betting
+mechanic, created from scratch to demonstrate practical AppSec skills:
+designing, exploiting, documenting, and fixing real web vulnerabilities in
+an app I built myself.
+
+This is not a full casino platform — it's a single coin-toss betting game
+(place a bet, pick heads or tails, win or lose the amount) used as a
+realistic, small-scale app to practice AppSec on.
 
 Built as part of my transition from casino game development into
 cybersecurity (currently studying at CDAC Hyderabad).
@@ -10,8 +15,8 @@ cybersecurity (currently studying at CDAC Hyderabad).
 ## Why this project
 
 Most beginner AppSec portfolios use a pre-made vulnerable app (DVWA, Juice
-Shop). I built my own instead — a small casino app, using my prior game dev
-background — so I could demonstrate both sides of the problem: how a
+Shop). I built my own instead — a small betting app, using my prior game
+dev background — so I could demonstrate both sides of the problem: how a
 developer accidentally introduces a vulnerability, and how an attacker
 finds and exploits it.
 
@@ -39,15 +44,15 @@ Built in two phases:
 Full writeups with reproduction steps, evidence, root cause, and fixes
 are in [`/docs`](./docs).
 
-| # | Vulnerability | Status |
-|---|---------------|--------|
-| 1 | Insecure Direct Object Reference (IDOR) on `/profile/:id` | Fixed |
-| 2 | Session Fixation on login | Fixed |
-| 3 | Missing input validation on bet amount (business logic flaw) | Documented |
-| 4 | Race condition on bet placement | Planned |
-| 5 | Plaintext password storage | Planned |
-| 6 | SQL Injection (deliberately introduced) | Planned |
-| 7 | Stored XSS (deliberately introduced) | Planned |
+| # | Vulnerability                                                 | Status      |
+|---|----------------------------------------------------------------|--------------|
+| 1 | Insecure Direct Object Reference (IDOR) on `/profile/:id`      | Fixed        |
+| 2 | Session Fixation on login                                       | Fixed        |
+| 3 | Missing input validation on bet amount (business logic flaw)   | Documented   |
+| 4 | Race condition on bet placement                                 | Planned      |
+| 5 | Plaintext password storage                                      | Planned      |
+| 6 | SQL Injection (deliberately introduced)                         | Planned      |
+| 7 | Stored XSS (deliberately introduced)                            | Planned      |
 
 ## Branches
 

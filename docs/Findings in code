@@ -1,0 +1,6 @@
+post/signup:
+1. input validation 
+- not following any kind of validation like minimum required character,number,special characters requirement in password.
+- accepts any kind of input other than strings, including whitespace.
+- accepts same username with different password, does not accept if password is different: attacker can know the password thru trial
+-  

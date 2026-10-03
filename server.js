@@ -81,6 +81,13 @@ app.post('/bet', (req, res) => {
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
 
+  if (!Number.isInteger(betAmount) || betAmount <= 0) {
+    return res.send('Invalid bet amount. <a href="/dashboard">Back to Dashboard</a>');
+  }
+  if (betAmount > user.balance) {
+    return res.send('Insufficient balance for this bet. <a href="/dashboard">Back to Dashboard</a>');
+  }
+
   const outcome = Math.random() < 0.5 ? 'heads' : 'tails';
   const won = outcome === choice;
   const newBalance = won ? user.balance + betAmount : user.balance - betAmount;

@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const db = require('./db');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const PORT = 3000;
@@ -26,9 +27,9 @@ app.get('/signup', (req, res) => {
 
 // Signup form submission
 app.post('/signup', (req, res) => {
-//   console.log("Form Data Received:", req);
   const { username, password } = req.body;
-  db.prepare('INSERT INTO users (username, password) VALUES (?, ?)').run(username, password);
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  db.prepare('INSERT INTO users (username, password) VALUES (?, ?)').run(username, hashedPassword);
   res.redirect('/login');
 });
 
@@ -40,16 +41,16 @@ app.get('/login', (req, res) => {
 // Login form submission
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  const user = db.prepare('SELECT * FROM users WHERE username = ? AND password = ?').get(username, password);
-  if (user) {
-  req.session.regenerate((err) => {
-    if (err) return res.send('Something went wrong. Please try again.');
-    req.session.userId = user.id;
-    req.session.isAdmin = user.is_admin;
-    res.redirect('/dashboard');
+  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
+
+  if (user && bcrypt.compareSync(password, user.password)) {
+    req.session.regenerate((err) => {
+      if (err) return res.send('Something went wrong. Please try again.');
+      req.session.userId = user.id;
+      req.session.isAdmin = user.is_admin;
+      res.redirect('/dashboard');
     });
-  } 
-  else {
+  } else {
     res.send('Invalid username or password. <a href="/login">Try again</a>');
   }
 });

@@ -1,5 +1,7 @@
 const Database = require('better-sqlite3');
+const bcrypt = require('bcrypt');
 const db = new Database('casino.db');
+
 
 // Create users table if it doesn't exist
 db.exec(`
@@ -28,8 +30,9 @@ db.exec(`
 // Seed one admin user if none exists (username: admin, password: admin123)
 const adminExists = db.prepare('SELECT * FROM users WHERE username = ?').get('admin');
 if (!adminExists) {
+  const hashedPassword = bcrypt.hashSync('admin123', 10);
   db.prepare('INSERT INTO users (username, password, balance, is_admin) VALUES (?, ?, ?, ?)')
-    .run('admin', 'admin123', 5000, 1);
+    .run('admin', hashedPassword, 5000, 1);
   console.log('Admin user created: admin / admin123');
 }
 

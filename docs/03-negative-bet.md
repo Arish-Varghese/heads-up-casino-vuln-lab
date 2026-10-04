@@ -43,6 +43,12 @@ Added three server-side validation checks before the bet is processed:
 Both checks happen before any balance calculation or database write,
 ensuring no invalid bet can affect the stored balance.
 
+Note: the browser's native number input has its own step-validation quirk
+that allows certain near-integer decimals (e.g. 1.99999999) to bypass
+client-side validation due to floating-point tolerance. This has no
+security impact, since the server-side check (Number.isInteger) validates
+the actual submitted value independently of any client-side behavior.
+
 ## Verification
 - amount = -10 → rejected with "Invalid bet amount."
 - amount = 0 → rejected with "Invalid bet amount."
@@ -50,3 +56,14 @@ ensuring no invalid bet can affect the stored balance.
   "Insufficient balance for this bet."
 - amount = 300 (valid, within balance) → processed normally, balance
   updated correctly as a loss.
+
+## Additional Observation: URL Query Parameter Manipulation (Not Exploitable)
+
+The dashboard route accepts `result` and `amount` as URL query parameters
+purely for displaying the "you won/lost X" message after a bet. These
+values can be freely edited in the URL (e.g. changing result=win to
+result=loss, or changing the amount), but this has no security impact:
+the actual balance is always read fresh from the database on every
+dashboard load, independent of these query parameters. This confirms the
+app correctly separates client-displayed state from server-side
+source-of-truth state for anything involving money. No fix required.

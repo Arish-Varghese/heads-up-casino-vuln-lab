@@ -77,7 +77,11 @@ app.post('/bet', (req, res) => {
   }
 
   const { choice, amount } = req.body;
-  const betAmount = parseInt(amount);
+  const betAmount = Number(amount);
+
+  if (!Number.isInteger(betAmount) || betAmount <= 0) {
+    return res.send('Invalid bet amount. <a href="/dashboard">Back to Dashboard</a>');
+  }
 
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
 

@@ -104,7 +104,16 @@ app.post('/bet', (req, res) => {
 app.get('/history', (req, res) => {
   if (!req.session.userId) return res.redirect('/login');
   const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
-  const bets = db.prepare('SELECT * FROM bets WHERE user_id = ?').all(req.session.userId);
+
+  const filter = req.query.result;
+  let bets;
+  if (filter === 'win' || filter === 'loss') {
+    bets = db.prepare('SELECT * FROM bets WHERE user_id = ? AND result = ?')
+      .all(req.session.userId, filter);
+  } else {
+    bets = db.prepare('SELECT * FROM bets WHERE user_id = ?').all(req.session.userId);
+  }
+
   res.render('history', { bets, user });
 });
 

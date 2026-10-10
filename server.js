@@ -73,9 +73,7 @@ app.get('/dashboard', (req, res) => {
 
 // Place a bet
 app.post('/bet', (req, res) => {
-  if (!req.session.userId) {
-    return res.redirect('/login');
-  }
+  if (!req.session.userId) return res.redirect('/login');
 
   const { choice, amount } = req.body;
   const betAmount = Number(amount);
@@ -84,23 +82,20 @@ app.post('/bet', (req, res) => {
     return res.send('Invalid bet amount. <a href="/dashboard">Back to Dashboard</a>');
   }
 
-  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+  const outcome = Math.random() < 0.5 ? 'heads' : 'tails';
+  const won = outcome === choice;
+  const delta = won ? betAmount : -betAmount;
 
-  if (!Number.isInteger(betAmount) || betAmount <= 0) {
-    return res.send('Invalid bet amount. <a href="/dashboard">Back to Dashboard</a>');
-  }
-  if (betAmount > user.balance) {
+  const result = db.prepare(
+    'UPDATE users SET balance = balance + ? WHERE id = ? AND balance >= ?'
+  ).run(delta, req.session.userId, betAmount);
+
+  if (result.changes === 0) {
     return res.send('Insufficient balance for this bet. <a href="/dashboard">Back to Dashboard</a>');
   }
 
-  const outcome = Math.random() < 0.5 ? 'heads' : 'tails';
-  const won = outcome === choice;
-  const newBalance = won ? user.balance + betAmount : user.balance - betAmount;
-
-  db.prepare('UPDATE users SET balance = ? WHERE id = ?').run(newBalance, user.id);
-
   db.prepare('INSERT INTO bets (user_id, amount, choice, result, timestamp) VALUES (?, ?, ?, ?, ?)')
-    .run(user.id, betAmount, choice, won ? 'win' : 'loss', new Date().toISOString());
+    .run(req.session.userId, betAmount, choice, won ? 'win' : 'loss', new Date().toISOString());
 
   res.redirect(`/dashboard?result=${won ? 'win' : 'loss'}&amount=${betAmount}`);
 });

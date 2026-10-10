@@ -48,9 +48,9 @@ are in [`/docs`](./docs).
 |---|----------------------------------------------------------------|--------------|
 | 1 | Insecure Direct Object Reference (IDOR) on `/profile/:id`      | Fixed        |
 | 2 | Session Fixation on login                                       | Fixed        |
-| 3 | Missing input validation on bet amount (business logic flaw)   | Documented   |
-| 4 | Race condition on bet placement                                 | Planned      |
-| 5 | Plaintext password storage                                      | Planned      |
+| 3 | Missing input validation on bet amount (business logic flaw)   | Fixed   |
+| 4 | Race condition on bet placement                                 | Fixed      |
+| 5 | Plaintext password storage                                      | Fixed      |
 | 6 | SQL Injection (deliberately introduced)                         | Planned      |
 | 7 | Stored XSS (deliberately introduced)                            | Planned      |
 
@@ -63,7 +63,9 @@ are in [`/docs`](./docs).
 ## Running locally
 
 npm install
+
 node db.js
+
 node server.js
 
 App runs at `http://localhost:3000`. Default admin login: `admin` /

@@ -108,8 +108,11 @@ the browser. No other code changes were required, since the entire
 vulnerability was contained in this one template line.
 
 ## Verification
-(to be completed — resave the same payload to a test user's bio, then
-view that profile both as the user themselves and as admin, confirming
-in both cases the script no longer executes: the browser should display
-the payload as plain visible text, and no POST /admin/update-balance
-request should appear in Burp's HTTP History when the profile is viewed)
+Reloaded Arish's profile (containing the same malicious bio payload from
+the exploit) after applying the fix. The script tag is now rendered as
+literal, inert text within the Bio field, instead of being parsed and
+executed as HTML/JavaScript. Balance remained unchanged at 1000, and no
+POST /admin/update-balance request fired, confirming the fix fully
+prevents the exploit without any functional change to the bio feature
+itself for legitimate plain-text use. Checkout xss-fix-verification.png
+for evidence.

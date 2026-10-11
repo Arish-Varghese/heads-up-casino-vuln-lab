@@ -52,7 +52,7 @@ are in [`/docs`](./docs).
 | 4 | Race condition on bet placement                                 | Fixed      |
 | 5 | Plaintext password storage                                      | Fixed      |
 | 6 | SQL Injection (deliberately introduced)                         | Fixed      |
-| 7 | Stored XSS (deliberately introduced)                            | Planned      |
+| 7 | Stored XSS (deliberately introduced)                            | Fixed      |
 
 ## Branches
 

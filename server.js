@@ -136,7 +136,20 @@ app.post('/admin/update-balance', (req, res) => {
   res.redirect('/admin');
 });
 
-// View a user's profile - VULNERABLE: trusts the URL id with no ownership check
+app.get('/profile/edit', (req, res) => {
+  if (!req.session.userId) return res.redirect('/login');
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(req.session.userId);
+  res.render('edit-profile', { user });
+});
+
+app.post('/profile/edit', (req, res) => {
+  if (!req.session.userId) return res.redirect('/login');
+  const { bio } = req.body;
+  db.prepare('UPDATE users SET bio = ? WHERE id = ?').run(bio, req.session.userId);
+  res.redirect(`/profile/${req.session.userId}`);
+});
+
+// View a user's profile
 app.get('/profile/:id', (req, res) => {
   if (!req.session.userId) return res.redirect('/login');
 

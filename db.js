@@ -10,7 +10,8 @@ db.exec(`
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     balance INTEGER NOT NULL DEFAULT 1000,
-    is_admin INTEGER NOT NULL DEFAULT 0
+    is_admin INTEGER NOT NULL DEFAULT 0,
+    bio TEXT DEFAULT ''
   )
 `);
 
